@@ -1,0 +1,64 @@
+.container {
+  height: 480px;
+  display: flex;
+  justify-content: center;
+  margin-top: 200px;
+}
+
+.fixed-div {
+  border-radius: 30px;
+  background-color: #d6ee90;
+  /* width: 1000px;  Задайте желаната ширина */
+  /* height: 100%;  Оставете място за хедъра */
+  overflow-x: hidden;
+  border: 1px solid white;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  margin: 3rem;
+  justify-content: space-between;
+}
+
+submit {
+  color: white;
+}
+.fixed-div::-webkit-scrollbar {
+  display: none;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+th,
+td {
+  width: 150px;
+  border: 0px solid #ddd;
+  padding: 5px;
+  border-bottom: 1px solid white;
+}
+
+tbody td {
+  text-align: center;
+}
+
+th {
+  background-color: #73ea5f;
+  padding: 10px;
+}
+
+.color1 {
+  color: purple;
+}
+.color2 {
+  background-color: black;
+}
