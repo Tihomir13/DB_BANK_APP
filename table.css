@@ -14,7 +14,7 @@
   border: 1px solid white;
 }
 
-form {
+.left-main-form .right-main-form {
   display: flex;
   flex-direction: column;
   margin: 3rem;

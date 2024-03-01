@@ -9,17 +9,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BankApp</title>
     <link rel="stylesheet" href="table.css" />
+    <link rel="stylesheet" href="footer.css" />
   </head>
   <body>
     <header> </header>
     <main>
       <div class="container">
-        <form action="" method="post">
-          <input type="submit" value="Име" />
-          <input type="submit" value="Име" />
-          <input type="submit" value="Име" />
-          <input type="submit" value="Име" />
-        </form>
+        <div class="left-main-form">
+          <form action="" method="post">
+            <input type="submit" value="Име" />
+            <input type="submit" value="Име" />
+            <input type="submit" value="Име" />
+            <input type="submit" value="Име" />
+          </form>
+        </div>
         <div class="fixed-div">
           <table>
             <thead>
@@ -34,21 +37,31 @@
             <tbody> </tbody>
           </table>
         </div>
-        <form action="" method="post">
-          <input type="submit" value="Име" />
-          <input type="submit" value="Име" />
-          <input type="submit" value="Име" />
-          <input type="submit" value="Име" />
-        </form>
+        <div class="left-main-form">
+          <form action="" method="post">
+            <input type="submit" value="Име" />
+            <input type="submit" value="Име" />
+            <input type="submit" value="Име" />
+            <input type="submit" value="Име" />
+          </form>
+        </div>
       </div>
     </main>
     <div class="textBoxes">
       <div id="left">
-        <form action="" method="post">
-          <input type="submit" value="Име" />
-          <input type="submit" value="Име" />
-          <input type="submit" value="Име" />
-          <input type="submit" value="Име" />
+        <form action="" method="post" id="formText">
+          <div>
+            <input type="text" />
+            <input type="text" />
+            <input type="text" />
+            <input type="text" />
+            <input type="text" />
+          </div>
+          <div>
+            <input type="submit" value="Add" />
+            <input type="submit" value="Update" />
+            <input type="submit" value="Delete" />
+          </div>
         </form>
       </div>
       <div id="right">
@@ -62,4 +75,3 @@
     </div>
   </body>
 </html>
-    
