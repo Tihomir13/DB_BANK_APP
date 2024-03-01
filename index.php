@@ -1,3 +1,7 @@
+<?php 
+  include("database.php");
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -8,7 +12,10 @@
   </head>
   <body>
     <header> </header>
-
+    <!-- SELECT `COLUMN_NAME` 
+    FROM `INFORMATION_SCHEMA`.`COLUMNS` 
+    WHERE `TABLE_SCHEMA`='yourdatabasename' 
+        AND `TABLE_NAME`='yourtablename'; -->
     <main>
       <div class="container">
         <form action="" method="post">
@@ -21,12 +28,17 @@
           <table>
             <thead>
               <tr>
-                <th>ID</th>
-                <th>Име</th>
-                <th>Производител</th>
-                <th>Грамаж</th>
-                <th>Цена</th>
-                <th>Цена/грамаж</th>
+                <?php
+                    if (mysqli_query($conn, "SHOW COLUMNS FROM client")) {
+                      $result = mysqli_query($conn, "SHOW COLUMNS FROM client");
+                      while($row = mysqli_fetch_assoc($result)){
+                        ?>
+                        <td><?php echo key($row);?></td>
+                        </tr>
+                        <?php
+                      }
+                    }
+                  ?>
               </tr>
             </thead>
             <tbody> </tbody>
