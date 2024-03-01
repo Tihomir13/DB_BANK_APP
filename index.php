@@ -12,10 +12,6 @@
   </head>
   <body>
     <header> </header>
-    <!-- SELECT `COLUMN_NAME` 
-    FROM `INFORMATION_SCHEMA`.`COLUMNS` 
-    WHERE `TABLE_SCHEMA`='yourdatabasename' 
-        AND `TABLE_NAME`='yourtablename'; -->
     <main>
       <div class="container">
         <form action="" method="post">
@@ -28,17 +24,11 @@
           <table>
             <thead>
               <tr>
-                <?php
-                    if (mysqli_query($conn, "SHOW COLUMNS FROM client")) {
-                      $result = mysqli_query($conn, "SHOW COLUMNS FROM client");
-                      while($row = mysqli_fetch_assoc($result)){
-                        ?>
-                        <td><?php echo key($row);?></td>
-                        </tr>
-                        <?php
-                      }
-                    }
-                  ?>
+                <th>Name</th>
+                <th>EGN</th>
+                <th>Address</th>
+                <th>Phone Number</th>
+                <th>Email</th>
               </tr>
             </thead>
             <tbody> </tbody>
@@ -52,6 +42,24 @@
         </form>
       </div>
     </main>
-    <aside> </aside>
+    <div class="textBoxes">
+      <div id="left">
+        <form action="" method="post">
+          <input type="submit" value="Име" />
+          <input type="submit" value="Име" />
+          <input type="submit" value="Име" />
+          <input type="submit" value="Име" />
+        </form>
+      </div>
+      <div id="right">
+        <form action="" method="post">
+          <input type="submit" value="Име" />
+          <input type="submit" value="Име" />
+          <input type="submit" value="Име" />
+          <input type="submit" value="Име" />
+        </form>
+      </div>
+    </div>
   </body>
 </html>
+    
