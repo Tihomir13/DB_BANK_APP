@@ -1,6 +1,6 @@
-<?php 
+<!-- <?php 
   include("database.php");
-?>
+?> -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -15,12 +15,19 @@
     <header> </header>
     <main>
       <div class="container">
-        <div class="left-main-form">
-          <form action="" method="post">
-            <input type="submit" value="Име" />
-            <input type="submit" value="Име" />
-            <input type="submit" value="Име" />
-            <input type="submit" value="Име" />
+        <div
+          class="left-main-form"
+          style="display: flex; align-content: center"
+        >
+          <form
+            action="script.php"
+            method="post"
+            style="display: flex; flex-direction: column; gap: 5rem"
+          >
+            <button name="button1" value="Име">Име</button>
+            <button name="button2" value="Име">Име</button>
+            <button name="button3" value="Име">Име</button>
+            <button name="button4" value="Име">Име</button>
           </form>
         </div>
         <div class="fixed-div">
@@ -37,39 +44,66 @@
             <tbody> </tbody>
           </table>
         </div>
-        <div class="left-main-form">
-          <form action="" method="post">
-            <input type="submit" value="Име" />
-            <input type="submit" value="Име" />
-            <input type="submit" value="Име" />
-            <input type="submit" value="Име" />
+        <div class="right-main-form">
+          <form
+            action=""
+            method="post"
+            style="display: flex; flex-direction: column; gap: 5rem"
+          >
+            <button name="button1" value="Име">Име</button>
+            <button name="button2" value="Име">Име</button>
+            <button name="button3" value="Име">Име</button>
+            <button name="button4" value="Име">Име</button>
           </form>
         </div>
       </div>
     </main>
+
     <div class="textBoxes">
       <div id="left">
-        <form action="" method="post" id="formText">
-          <div>
-            <input type="text" />
-            <input type="text" />
-            <input type="text" />
-            <input type="text" />
-            <input type="text" />
+        <form action="" method="post" id="form-Changer">
+          <div style="gap: 20px; display: flex; flex-direction: column">
+            <input type="text" class="textBox-Changers" placeholder="Name" />
+            <input type="text" class="textBox-Changers" placeholder="EGN" />
+            <input type="text" class="textBox-Changers" placeholder="Address" />
+            <input
+              type="text"
+              class="textBox-Changers"
+              placeholder="Phone Number"
+            />
+            <input type="text" class="textBox-Changers" placeholder="Email" />
           </div>
-          <div>
-            <input type="submit" value="Add" />
-            <input type="submit" value="Update" />
-            <input type="submit" value="Delete" />
+          <div
+            style="
+              gap: 20px;
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+            "
+          >
+            <input type="submit" value="Add" class="Button-Changers" />
+            <input type="submit" value="Update" class="Button-Changers" />
+            <input type="submit" value="Delete" class="Button-Changers" />
           </div>
         </form>
       </div>
       <div id="right">
-        <form action="" method="post">
-          <input type="submit" value="Име" />
-          <input type="submit" value="Име" />
-          <input type="submit" value="Име" />
-          <input type="submit" value="Име" />
+        <form
+          action=""
+          method="post"
+          style="display: flex; justify-content: center; align-items: center"
+        >
+          <input type="submit" value="table1" class="table-Button" />
+          <input type="submit" value="table2" class="table-Button" />
+          <input type="submit" value="table3" class="table-Button" />
+          <input type="submit" value="table4" class="table-Button" />
+          <input type="submit" value="table5" class="table-Button" />
+          <input type="submit" value="table6" class="table-Button" />
+          <input type="submit" value="table7" class="table-Button" />
+          <input type="submit" value="table8" class="table-Button" />
+          <input type="submit" value="table9" class="table-Button" />
+          <input type="submit" value="table10" class="table-Button" />
+          <input type="submit" value="table11" class="table-Button" />
         </form>
       </div>
     </div>

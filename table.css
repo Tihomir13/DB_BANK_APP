@@ -1,8 +1,10 @@
 .container {
-  height: 480px;
   display: flex;
-  justify-content: center;
+  height: 480px;
   margin-top: 20px;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-evenly;
 }
 
 .fixed-div {
@@ -14,16 +16,6 @@
   border: 1px solid white;
 }
 
-.left-main-form .right-main-form {
-  display: flex;
-  flex-direction: column;
-  margin: 3rem;
-  justify-content: space-between;
-}
-
-submit {
-  color: white;
-}
 .fixed-div::-webkit-scrollbar {
   display: none;
 }
@@ -56,9 +48,48 @@ th {
   padding: 10px;
 }
 
-.color1 {
-  color: purple;
+.textBox-Changers {
+  border-radius: 30px;
+  text-align: center;
+  padding: 0.2rem;
+  border: 1px black solid;
+  box-shadow: inset 1px 2px 10px 0px rgba(255, 0, 0, 0.2);
 }
-.color2 {
-  background-color: black;
+
+#form-Changer {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.textBoxes {
+  margin-top: 100px;
+}
+
+.Button-Changers {
+  background-color: blue;
+  color: white;
+  border: 0;
+  border-radius: 30px;
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+button input {
+  cursor: pointer;
+}
+
+#right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.table-Button {
+  margin-left: 5px;
+  margin-right: 5px;
+  border-radius: 20px;
+  border: 0px;
+  padding: 8px 17px;
+  background-color: red;
+  cursor: pointer;
 }
