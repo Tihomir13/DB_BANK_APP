@@ -1,7 +1,7 @@
 .container {
   display: flex;
   height: 480px;
-  margin-top: 20px;
+  margin-top: 40px;
   width: 100%;
   flex-direction: row;
   justify-content: space-evenly;
@@ -46,6 +46,18 @@ tbody td {
 th {
   background-color: #73ea5f;
   padding: 10px;
+}
+
+.left-main-form {
+  display: flex;
+  align-content: center;
+  flex-wrap: wrap;
+}
+
+.right-main-form {
+  display: flex;
+  align-content: center;
+  flex-wrap: wrap;
 }
 
 .textBox-Changers {
