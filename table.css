@@ -10,8 +10,6 @@
 .fixed-div {
   border-radius: 30px;
   background-color: #d6ee90;
-  /* width: 1000px;  Задайте желаната ширина */
-  /* height: 100%;  Оставете място за хедъра */
   overflow-x: hidden;
   border: 1px solid white;
 }
@@ -74,7 +72,7 @@ th {
 }
 
 .textBoxes {
-  margin-top: 100px;
+  margin-top: 60px;
 }
 
 .Button-Changers {
@@ -82,7 +80,7 @@ th {
   color: white;
   border: 0;
   border-radius: 30px;
-  padding: 0.5rem;
+  padding: 0.7rem 2.5rem;
   cursor: pointer;
 }
 
@@ -94,12 +92,22 @@ button input {
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: 30px;
+  background-color: rgb(225, 225, 225);
+  margin: 0px 10px 0px 10px;
+}
+
+#left {
+  border-radius: 30px;
+  background-color: rgb(232, 232, 232);
+  margin: 0px 10px 0px 10px;
+  padding: 60px;
 }
 
 .table-Button {
   margin-left: 5px;
   margin-right: 5px;
-  border-radius: 20px;
+  border-radius: 10px;
   border: 0px;
   padding: 8px 17px;
   background-color: red;
