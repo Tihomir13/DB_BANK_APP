@@ -1,6 +1,6 @@
-<!-- <?php 
+<?php 
   include("database.php");
-?> -->
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -43,10 +43,28 @@
                 <th>Address</th>
                 <th>Phone Number</th>
                 <th>Email</th>
-                <th>Email</th>
               </tr>
             </thead>
-            <tbody> </tbody>
+            <tbody> 
+              <tr>
+              <tr>
+                <?php
+                    if (mysqli_query($conn, "SELECT * FROM client")) {
+                      $result = mysqli_query($conn, "SELECT * FROM client");
+                      while($row = mysqli_fetch_assoc($result)){
+                        ?>
+                        <td><?php echo $row ['Name'];?></td>
+                        <td><?php echo $row ['EGN'];?></td>
+                        <td><?php echo $row ['Address'];?></td>
+                        <td><?php echo $row ['Phone_number'];?></td>
+                        <td><?php echo $row ['Email'];?></td>
+                        </tr>
+                        <?php
+                      }
+                    }
+                    else echo"Error"
+                  ?>
+            </tbody>
           </table>
         </div>
         <div
@@ -73,17 +91,19 @@
 
     <div class="textBoxes">
       <div id="left">
-        <form action="" method="post" id="form-Changer">
+        <form action="ClientChanges.php" method="post" id="form-Changer">
           <div style="gap: 20px; display: flex; flex-direction: column">
-            <input type="text" class="textBox-Changers" placeholder="Name" />
-            <input type="text" class="textBox-Changers" placeholder="EGN" />
-            <input type="text" class="textBox-Changers" placeholder="Address" />
+            <input type="text" class="textBox-Changers" placeholder="Name" required name="Name-Client"/>
+            <input type="text" class="textBox-Changers" placeholder="EGN" required name="EGN-Client"/>
+            <input type="text" class="textBox-Changers" placeholder="Address" required name="Address-Client"/>
             <input
               type="text"
               class="textBox-Changers"
               placeholder="Phone Number"
+              required
+              name="Phone-Client"
             />
-            <input type="text" class="textBox-Changers" placeholder="Email" />
+            <input type="email" class="textBox-Changers" placeholder="Email" required name="Email-Client"/>
           </div>
           <div
             style="
@@ -93,9 +113,9 @@
               justify-content: center;
             "
           >
-            <input type="submit" value="Add" class="Button-Changers" />
-            <input type="submit" value="Update" class="Button-Changers" />
-            <input type="submit" value="Delete" class="Button-Changers" />
+            <input onclick="location.reload()" type="submit" value="Add" class="Button-Changers" name="add-Client"/>
+            <input type="submit" value="Update" class="Button-Changers" name="update-Client"/>
+            <input type="submit" value="Delete" class="Button-Changers" name="delete-Client"/>
           </div>
         </form>
       </div>
