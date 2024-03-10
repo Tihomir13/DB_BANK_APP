@@ -1,4 +1,4 @@
-<?php 
+<?php
   include("database.php");
 ?>
 
@@ -24,11 +24,11 @@
           "
         >
           <form
-            action="script.php"
+            action="index.php"
             method="post"
             style="display: flex; flex-direction: column; gap: 5rem"
           >
-            <button name="button1" value="Име">Име</button>
+            <button name="button1" value="sort">sort by Име</button>
             <button name="button2" value="Име">Име</button>
             <button name="button3" value="Име">Име</button>
             <button name="button4" value="Име">Име</button>
@@ -38,7 +38,8 @@
           <table>
             <thead>
               <tr>
-                <th>Name</th>
+                <th>Name<form  action="index.php"
+                method="post"><button name="sorting"><img src="pictures/sort.png"></button></form></th>
                 <th>EGN</th>
                 <th>Address</th>
                 <th>Phone Number</th>
@@ -49,7 +50,36 @@
               <tr>
               <tr>
                 <?php
-                    if (mysqli_query($conn, "SELECT * FROM client")) {
+                      if (isset($_POST["sorting"]) && $sorted == true) {
+                        $result = mysqli_query($conn, "SELECT * FROM client ORDER BY Name DESC");
+                        while($row = mysqli_fetch_assoc($result)){
+                          ?>
+                          <td><?php echo $row ['Name'];?></td>
+                          <td><?php echo $row ['EGN'];?></td>
+                          <td><?php echo $row ['Address'];?></td>
+                          <td><?php echo $row ['Phone_number'];?></td>
+                          <td><?php echo $row ['Email'];?></td>
+                          </tr>
+                          <?php
+                          $sorted = false;
+                        }
+                      }
+                      else if (isset($_POST["sorting"]) && $sorted === false) {
+                        $result = mysqli_query($conn, "SELECT * FROM client ORDER BY Name DESC");
+                        while($row = mysqli_fetch_assoc($result)){
+                          ?>
+                          <td><?php echo $row ['Name'];?></td>
+                          <td><?php echo $row ['EGN'];?></td>
+                          <td><?php echo $row ['Address'];?></td>
+                          <td><?php echo $row ['Phone_number'];?></td>
+                          <td><?php echo $row ['Email'];?></td>
+                          </tr>
+                          <?php
+                          $sorted = true;
+                        }
+                      }
+                    // else echo"Error"
+                    else if(mysqli_query($conn, "SELECT * FROM client")) {
                       $result = mysqli_query($conn, "SELECT * FROM client");
                       while($row = mysqli_fetch_assoc($result)){
                         ?>
@@ -62,7 +92,7 @@
                         <?php
                       }
                     }
-                    else echo"Error"
+                    else echo"Error";
                   ?>
             </tbody>
           </table>
@@ -113,7 +143,7 @@
               justify-content: center;
             "
           >
-            <input onclick="location.reload()" type="submit" value="Add" class="Button-Changers" name="add-Client"/>
+            <input type="submit" value="Add" class="Button-Changers" name="add-Client"/>
             <input type="submit" value="Update" class="Button-Changers" name="update-Client"/>
             <input type="submit" value="Delete" class="Button-Changers" name="delete-Client"/>
           </div>
