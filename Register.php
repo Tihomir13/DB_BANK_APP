@@ -43,20 +43,32 @@ if(isset($_POST["register"])){
 
     $hash = password_hash($password, PASSWORD_DEFAULT);
 
-    
-    $insertClient = "INSERT INTO client (Name, EGN, Address, Phone_Number, Email, Username, Password)
-        VALUES ('$name', '$egn','$address', '$phone', '$email', '$username', '$hash')";
-    try {
-        if (!$conn) {
-            throw new Exception("Database connection not established");
+    $getClient = "SELECT * FROM client WHERE username = '$username'";
+    $Client = mysqli_query($conn, $getClient);
+
+    $getEmployee = "SELECT * FROM employee WHERE username = '$username'";
+    $Employee = mysqli_query($conn, $getEmployee);
+
+    if (mysqli_num_rows($Client) == 0 && mysqli_num_rows($Employee) == 0) {
+        $insertClient = "INSERT INTO client (Name, EGN, Address, Phone_Number, Email, Username, Password)
+            VALUES ('$name', '$egn','$address', '$phone', '$email', '$username', '$hash')";
+        try {
+            if (!$conn) {
+                throw new Exception("Database connection not established");
+            }
+            if (mysqli_query($conn, $insertClient)) {
+                // echo "Client is now registered";
+            } else {
+                throw new Exception("Could not register user. Error: " . mysqli_error($conn));
+            }
+        } catch (Exception $e) {
+            //echo $e->getMessage();
         }
-        if (mysqli_query($conn, $insertClient)) {
-            // echo "Client is now registered";
-        } else {
-            throw new Exception("Could not register user. Error: " . mysqli_error($conn));
-        }
-    } catch (Exception $e) {
-        //echo $e->getMessage();
+    }
+    else {
+        ?>
+    <script> alert("Username-ът вече е зает!")</script>
+    <?php 
     }
 }
 ?>

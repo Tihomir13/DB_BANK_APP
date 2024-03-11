@@ -33,12 +33,15 @@ if(isset($_POST["login"])){
   // $hash = password_hash($password, PASSWORD_DEFAULT);
   
   // Проверка за съществуващ потребител
-  $sql = "SELECT * FROM client WHERE username = '$username'";
-  $result = mysqli_query($conn, $sql);
-  
+  $getClient = "SELECT * FROM client WHERE username = '$username'";
+  $Client = mysqli_query($conn, $getClient);
+
+  $getEmployee = "SELECT * FROM employee WHERE username = '$username'";
+  $Employee = mysqli_query($conn, $getEmployee);
+
   // Проверка за грешки и съществуващ потребител
-  if ($result && mysqli_num_rows($result) == 1) {
-    $userdata = mysqli_fetch_assoc($result);
+  if ($Client && mysqli_num_rows($Client) == 1) {
+    $userdata = mysqli_fetch_assoc($Client);
     $hashedpass = $userdata['password'];
     
     // Проверка за съвпадение на хешираната парола
@@ -54,7 +57,26 @@ if(isset($_POST["login"])){
     } else {
       echo "Грешно потребителско име или парола.";
     }
-  } else {
+  } 
+  else if ($Employee && mysqli_num_rows($Employee) == 1) {
+    $userdata = mysqli_fetch_assoc($Employee);
+    $hashedpass = $userdata['password'];
+    
+    // Проверка за съвпадение на хешираната парола
+    if (password_verify($password, $hashedpass)) {
+      session_start();
+      $_SESSION['username'] = $userdata['username'];
+      $_SESSION['name'] = $userdata['Name'];
+      $_SESSION['email'] = $userdata['Email'];
+      
+      // Пренасочване към страницата за транзакции
+      header("Location: Transactions.php");
+      exit();
+    } else {
+      echo "Грешно потребителско име или парола.";
+    }
+  }
+  else {
     echo "Грешно потребителско име или парола.";
   }
 }
