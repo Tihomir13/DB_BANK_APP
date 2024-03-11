@@ -1,5 +1,5 @@
 <?php 
-  session_start();
+//   session_start();
   include('database.php');
 ?>
 
@@ -33,7 +33,7 @@
 <?php 
 if(isset($_POST["register"])){
 
-    $username = $_POST["Name-Client"];
+    $username = $_POST["Username-Client"];
     $password = $_POST["Password-Client"];
     $name = $_POST["Name-Client"];
     $email = $_POST["Email-Client"];
@@ -41,7 +41,7 @@ if(isset($_POST["register"])){
     $address = $_POST["Address-Client"];
     $phone = $_POST["Phone-Client"];
 
-    $hash = password_hash($password, CRYPT_SHA256);
+    $hash = password_hash($password, PASSWORD_DEFAULT);
 
     
     $insertClient = "INSERT INTO client (Name, EGN, Address, Phone_Number, Email, Username, Password)
@@ -52,9 +52,6 @@ if(isset($_POST["register"])){
         }
         if (mysqli_query($conn, $insertClient)) {
             // echo "Client is now registered";
-            $_SESSION['username'] = $username;
-            $_SESSION['name'] = $name;
-            $_SESSION['email'] = $email;
         } else {
             throw new Exception("Could not register user. Error: " . mysqli_error($conn));
         }

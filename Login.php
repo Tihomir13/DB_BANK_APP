@@ -1,5 +1,5 @@
 <?php 
-  session_start();
+  session_unset();
   include('database.php');
 ?>
 <!DOCTYPE html>
@@ -12,9 +12,9 @@
   </head>
   <body>
     <div class="container">
-      <form class="login-form" action="Transactions.php" method="post">
+      <form class="login-form" action="Login.php" method="post">
         <h2>Welcome to Our Bank</h2>
-        <input type="text" placeholder="Username" required name=Name-Client/>
+        <input type="text" placeholder="Username" required name="Username-Client"/>
         <input type="password" placeholder="Password" required name="Password-Client"/>
         <button type="submit" name="login">Log In</button>
         <p>Don't have an account? <a href="register.php">Register here</a></p>
@@ -27,26 +27,35 @@
 <?php 
 if(isset($_POST["login"])){
   
-  $username = $_POST["Name-Client"];
+  $username = $_POST["Username-Client"];
   $password = $_POST["Password-Client"];
+
+  // $hash = password_hash($password, PASSWORD_DEFAULT);
   
-  $hash = password_hash($password, CRYPT_SHA256);
+  // Проверка за съществуващ потребител
+  $sql = "SELECT * FROM client WHERE username = '$username'";
+  $result = mysqli_query($conn, $sql);
   
-  $sql = "SELECT * FROM client WHERE Username = '$username' AND Password = '$hash'";
-  try {
-    if (!$conn) {
-      throw new Exception("Database connection not established");
-    }
-    if (mysqli_query($conn, $sql)) {
-      $_SESSION['username'] = $username;
-      $_SESSION['name'] = $name;
-      $_SESSION['email'] = $email;
+  // Проверка за грешки и съществуващ потребител
+  if ($result && mysqli_num_rows($result) == 1) {
+    $userdata = mysqli_fetch_assoc($result);
+    $hashedpass = $userdata['password'];
+    
+    // Проверка за съвпадение на хешираната парола
+    if (password_verify($password, $hashedpass)) {
+      session_start();
+      $_SESSION['username'] = $userdata['username'];
+      $_SESSION['name'] = $userdata['Name'];
+      $_SESSION['email'] = $userdata['Email'];
+      
+      // Пренасочване към страницата за транзакции
       header("Location: Transactions.php");
+      exit();
     } else {
-      throw new Exception("Error wrong username or password " . mysqli_error($conn));
+      echo "Грешно потребителско име или парола.";
     }
-  } catch (Exception $e) {
-    //echo $e->getMessage();
+  } else {
+    echo "Грешно потребителско име или парола.";
   }
 }
 ?>
