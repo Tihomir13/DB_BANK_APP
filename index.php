@@ -10,6 +10,13 @@
     <title>BankApp</title>
     <link rel="stylesheet" href="table.css" />
     <link rel="stylesheet" href="footer.css" />
+
+    <script>
+       document.getElementById("Formsort").addEventListener("submit", function(event) {
+         event.preventDefault();
+       });
+    </script>
+
   </head>
   <body>
     <header> </header>
@@ -39,7 +46,7 @@
             <thead>
               <tr>
                 <th>Name<form  action="index.php"
-                method="post"><button name="sorting"><img src="pictures/sort.png"></button></form></th>
+                method="post"><button name="sorting" id="Formsort"><img src="pictures/sort.png"></button></form></th>
                 <th>EGN</th>
                 <th>Address</th>
                 <th>Phone Number</th>
@@ -50,7 +57,8 @@
               <tr>
               <tr>
                 <?php
-                      if (isset($_POST["sorting"]) && $sorted == true) {
+                $sorted = true;
+                      if (isset($_POST["sorting"]) && $sorted === true) {
                         $result = mysqli_query($conn, "SELECT * FROM client ORDER BY Name DESC");
                         while($row = mysqli_fetch_assoc($result)){
                           ?>
