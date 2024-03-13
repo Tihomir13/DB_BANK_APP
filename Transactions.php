@@ -2,12 +2,6 @@
 session_start();
 include('database.php');
 
-// if (!isset($_SESSION['username'])) {
-//   // Ако потребителят не е логнат, пренасочете го към страницата за логин
-//   header("Location: login.php");
-//   exit();
-// }
-
 $username = $_SESSION['username'];
 $name = $_SESSION['name'];
 $email = $_SESSION['email'];

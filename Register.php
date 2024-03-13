@@ -1,6 +1,7 @@
 <?php 
 //   session_start();
   include('database.php');
+  include('functionExtensions.php');
 ?>
 
 <!DOCTYPE html>
@@ -57,7 +58,9 @@ if(isset($_POST["register"])){
                 throw new Exception("Database connection not established");
             }
             if (mysqli_query($conn, $insertClient)) {
+                creatingBankAccount($egn, $conn);
                 // echo "Client is now registered";
+                header("Location: Login.php");
             } else {
                 throw new Exception("Could not register user. Error: " . mysqli_error($conn));
             }

@@ -50,6 +50,7 @@ if(isset($_POST["login"])){
       $_SESSION['username'] = $userdata['username'];
       $_SESSION['name'] = $userdata['Name'];
       $_SESSION['email'] = $userdata['Email'];
+      $_SESSION['egn'] = $userdata['EGN'];
       
       // Пренасочване към страницата за транзакции
       header("Location: Transactions.php");
