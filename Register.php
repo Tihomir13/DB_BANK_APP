@@ -9,7 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bank Registration</title>
-    <link rel="stylesheet" href="login_register.css">
+    <link rel="stylesheet" href="Style/login_register.css">
 </head>
 <body>
     <div class="container">

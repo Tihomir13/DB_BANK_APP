@@ -20,7 +20,7 @@ $email = $_SESSION['email'];
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>User Dashboard</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="Style/styles.css" />
   </head>
   <body>
     <div class="container">
@@ -62,13 +62,22 @@ $email = $_SESSION['email'];
             </thead>
             <tbody>
               <tr>
-                <td>2024-03-10</td>
-                <td>Deposit</td>
-                <td>John Doe</td>
-                <td>-</td>
-                <td>Employee Name</td>
-                <td>$100.00</td>
-              </tr>
+                <?php
+                  if(mysqli_query($conn, "SELECT * FROM transaction")) {
+                    $result = mysqli_query($conn, "SELECT * FROM transaction");
+                    while($row = mysqli_fetch_assoc($result)){
+                      ?>
+                            <td><?php echo $row ['Date'];?></td>
+                            <td><?php echo $row ['EGN'];?></td>
+                            <td><?php echo $row ['Address'];?></td>
+                            <td><?php echo $row ['Phone_number'];?></td>
+                            <td><?php echo $row ['Email'];?></td>
+                          </tr>
+                          <?php
+                          }
+                        }
+                        else echo"Error";
+                        ?>
               <!-- Add more rows for additional transactions -->
             </tbody>
           </table>

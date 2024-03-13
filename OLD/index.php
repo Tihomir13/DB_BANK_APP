@@ -55,7 +55,6 @@
             </thead>
             <tbody> 
               <tr>
-              <tr>
                 <?php
                 $sorted = true;
                       if (isset($_POST["sorting"]) && $sorted === true) {

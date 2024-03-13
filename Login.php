@@ -1,5 +1,5 @@
 <?php 
-  session_unset();
+  // session_unset();
   include('database.php');
 ?>
 <!DOCTYPE html>
@@ -8,7 +8,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bank Login</title>
-    <link rel="stylesheet" href="login_register.css">
+    <link rel="stylesheet" href="Style/login_register.css">
   </head>
   <body>
     <div class="container">
@@ -55,7 +55,11 @@ if(isset($_POST["login"])){
       header("Location: Transactions.php");
       exit();
     } else {
-      echo "Грешно потребителско име или парола.";
+      ?>
+      <script>
+        alert("Грешно потребителско име или парола.");
+      </script>
+      <?php
     }
   } 
   else if ($Employee && mysqli_num_rows($Employee) == 1) {
@@ -73,11 +77,19 @@ if(isset($_POST["login"])){
       header("Location: Transactions.php");
       exit();
     } else {
-      echo "Грешно потребителско име или парола.";
+      ?>
+      <script>
+        alert("Грешно потребителско име или парола.");
+      </script>
+      <?php
     }
   }
   else {
-    echo "Грешно потребителско име или парола.";
+    ?>
+      <script>
+        alert("Грешно потребителско име или парола.");
+      </script>
+      <?php
   }
 }
 ?>
