@@ -1,6 +1,7 @@
 <?php 
   // session_unset();
   include('database.php');
+  include('helperFunctions.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -47,10 +48,7 @@ if(isset($_POST["login"])){
     // Проверка за съвпадение на хешираната парола
     if (password_verify($password, $hashedpass)) {
       session_start();
-      $_SESSION['username'] = $userdata['username'];
-      $_SESSION['name'] = $userdata['Name'];
-      $_SESSION['email'] = $userdata['Email'];
-      $_SESSION['egn'] = $userdata['EGN'];
+      SetUserData($userdata);
       
       // Пренасочване към страницата за транзакции
       header("Location: Transactions.php");
@@ -70,10 +68,8 @@ if(isset($_POST["login"])){
     // Проверка за съвпадение на хешираната парола
     if (password_verify($password, $hashedpass)) {
       session_start();
-      $_SESSION['username'] = $userdata['username'];
-      $_SESSION['name'] = $userdata['Name'];
-      $_SESSION['email'] = $userdata['Email'];
-      
+      SetUserData($userdata);
+
       // Пренасочване към страницата за транзакции
       header("Location: Transactions.php");
       exit();

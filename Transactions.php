@@ -5,6 +5,12 @@ include('database.php');
 $username = $_SESSION['username'];
 $name = $_SESSION['name'];
 $email = $_SESSION['email'];
+$egn = $_SESSION['egn'];
+
+$getBankInfoQuery = mysqli_query($conn, "SELECT * FROM bank_account WHERE Client_EGN = '$egn'");
+$BankInfo = mysqli_fetch_assoc($getBankInfoQuery);
+$Amount = $BankInfo['Amount'];
+
 ?>
 
 
@@ -14,7 +20,7 @@ $email = $_SESSION['email'];
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>User Dashboard</title>
-    <link rel="stylesheet" href="Style/styles.css" />
+    <link rel="stylesheet" href="Style\styles.css" />
   </head>
   <body>
     <div class="container">
@@ -30,10 +36,13 @@ $email = $_SESSION['email'];
           </ul>
         </nav>
       </header>
-      <main>
+      <main style="height: 68vh;">
         <section class="make-transaction">
-          <h2>Make a Transaction</h2>
-          <form action="make_transaction.php" method="post">
+          <div class="transaction-header-section" style="display: flex; justify-content: space-between">
+            <h2>Make a Transaction</h2> 
+            <h2 style="position:relative; right: 200px;">Amount: <?php echo $Amount?></h2>
+          </div>
+          <form action="transaction.php" method="post">
             <label for="amount">Amount:</label>
             <input type="text" id="amount" name="amount" required />
             <label for="recipient">Recipient:</label>

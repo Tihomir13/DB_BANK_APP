@@ -27,4 +27,12 @@ function creatingBankAccount($Client_EGN, $conn){
 
     mysqli_query($conn, $insertBankAccount);      
 }
+
+function SetUserData($userData) {
+    $_SESSION['username'] = $userData['username'];
+    $_SESSION['name'] = $userData['Name'];
+    $_SESSION['email'] = $userData['Email'];
+    $_SESSION['egn'] = $userData['EGN'];
+}
+
 ?>
