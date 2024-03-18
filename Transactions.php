@@ -36,7 +36,7 @@ $currAccCurrency = $currentAccInfo['CurrencyName'];
         <nav>
           <ul>
             <li><a href="#">Home</a></li>
-            <li><a href="#">Credits</a></li>
+            <li><a href="Credits.php">Credits</a></li>
             <li><a href="#">Transactions</a></li>
             <li><a href="#">Profile</a></li>
             <li><a href="LOGIN.php">Logout</a></li>
