@@ -7,9 +7,10 @@ $name = $_SESSION['name'];
 $email = $_SESSION['email'];
 $egn = $_SESSION['egn'];
 
-$getBankInfoQuery = mysqli_query($conn, "SELECT * FROM bank_account WHERE Client_EGN = '$egn'");
-$BankInfo = mysqli_fetch_assoc($getBankInfoQuery);
-$Amount = $BankInfo['Amount'];
+$currentAccInfo = mysqli_fetch_assoc(
+  mysqli_query($conn, "SELECT * FROM bank_account WHERE Client_EGN = '$egn'"));
+$currAccAmount = $currentAccInfo['Amount'];
+$currAccIBAN = $currentAccInfo['IBAN'];
 
 ?>
 
@@ -36,18 +37,18 @@ $Amount = $BankInfo['Amount'];
           </ul>
         </nav>
       </header>
-      <main style="height: 68vh;">
+      <main >
         <section class="make-transaction">
           <div class="transaction-header-section" style="display: flex; justify-content: space-between">
             <h2>Make a Transaction</h2> 
-            <h2 style="position:relative; right: 200px;">Amount: <?php echo $Amount?></h2>
+            <h2 style="position:relative; right: 125px;">Amount: <?php echo $currAccAmount?></h2>
           </div>
-          <form action="transaction.php" method="post">
+          <form action="Transactions.php" method="post">
             <label for="amount">Amount:</label>
             <input type="text" id="amount" name="amount" required />
             <label for="recipient">Recipient:</label>
             <input type="text" id="recipient" name="recipient" required />
-            <button type="submit">Submit</button>
+            <button type="submit" name="transferButton">Submit</button>
           </form>
         </section>
         <section class="transactions">
@@ -55,26 +56,33 @@ $Amount = $BankInfo['Amount'];
           <table>
             <thead>
               <tr>
+                <th>ID</th>
+                <th>Amount</th>
                 <th>Date</th>
                 <th>Transaction Type</th>
                 <th>Sender</th>
-                <th>Receiver</th>
-                <th>Employee</th>
-                <th>Amount</th>
+                <th>Recipient</th>
+                <th>Employee_EGN</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <?php
-                  if(mysqli_query($conn, "SELECT * FROM transaction")) {
-                    $result = mysqli_query($conn, "SELECT * FROM transaction");
+                    $result = mysqli_query($conn, "SELECT transaction.*, trans_type.Type AS Trans_Type_Name 
+                    FROM transaction 
+                    INNER JOIN trans_type 
+                    ON transaction.Trans_Type_ID = trans_type.ID 
+                    WHERE transaction.S_Bank_Account_IBAN = '$currAccIBAN'");
+                    if($result) {
                     while($row = mysqli_fetch_assoc($result)){
                       ?>
+                            <td><?php echo $row ['ID'];?></td>
+                            <td><?php echo $row ['Amount'];?></td>
                             <td><?php echo $row ['Date'];?></td>
-                            <td><?php echo $row ['EGN'];?></td>
-                            <td><?php echo $row ['Address'];?></td>
-                            <td><?php echo $row ['Phone_number'];?></td>
-                            <td><?php echo $row ['Email'];?></td>
+                            <td><?php echo $row ['Trans_Type_Name'];?></td>
+                            <td><?php echo $row ['S_Bank_Account_IBAN'];?></td>
+                            <td><?php echo $row ['R_Bank_Account_IBAN'];?></td>
+                            <td><?php echo $row ['Employee_EGN'];?></td>
                           </tr>
                           <?php
                           }
@@ -92,3 +100,60 @@ $Amount = $BankInfo['Amount'];
     </div>
   </body>
 </html>
+
+<?php
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  if(isset($_POST["transferButton"])){
+      $amountTransfer = $_POST['amount'];
+      $recipientIBAN = $_POST['recipient'];
+      
+      $recAccQuery = mysqli_query($conn, "SELECT * FROM bank_account WHERE IBAN = '$recipientIBAN'");
+      $recipientAccInfo = mysqli_fetch_assoc($recAccQuery);
+      
+      $recAccIBAN = $recipientAccInfo['IBAN'];
+      $recAccAmount = $recipientAccInfo['Amount'];
+
+      // Проверка за наличие на IBAN-а който е въведен
+      if ($recAccQuery && mysqli_num_rows($recAccQuery) != 1){
+        ?>
+          <script>
+          alert("Несъществуващ IBAN!");
+          </script>
+        <?php 
+      return;
+      }
+      
+      // Проверка за наличие на парични средства
+      if($amountTransfer > $currAccAmount) {
+        ?>
+          <script>
+          alert("Недостатъчни средства!");
+          </script>
+        <?php 
+      return;
+      }
+
+      $currAccAmount -= $amountTransfer;
+      $recAccAmount += $amountTransfer;
+
+      //$randomEmployee = ('SELECT EGN FROM employee WHERE Position_ID = 2 ORDER BY RAND() LIMIT 1');
+      $transaction = "INSERT INTO transaction (Amount, Trans_Type_ID, S_Bank_Account_IBAN, R_Bank_Account_IBAN, Employee_EGN)
+      VALUES ('$amountTransfer', 3, '$currAccIBAN', '$recAccIBAN', '3333333333')";
+
+      $currAccUPDATE = 
+        "UPDATE bank_account 
+        SET Amount = '$currAccAmount'
+        WHERE IBAN = '$currAccIBAN'";
+
+      $recAccUPDATE = 
+        "UPDATE bank_account 
+        SET Amount = '$recAccAmount'
+        WHERE IBAN = '$recAccIBAN'";
+
+      mysqli_query($conn, $transaction);
+      mysqli_query($conn, $currAccUPDATE);
+      mysqli_query($conn, $recAccUPDATE);
+    }
+    exit();
+  }
+?>

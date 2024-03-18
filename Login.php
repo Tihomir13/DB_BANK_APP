@@ -1,5 +1,5 @@
 <?php 
-  // session_unset();
+  session_unset();
   include('database.php');
   include('helperFunctions.php');
 ?>
