@@ -1,8 +1,8 @@
+/* Общи стилове за целия сайт */
 body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f4f4f4;
 }
 
 .container {
@@ -12,58 +12,98 @@ body {
 }
 
 header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  background-color: #333;
+  color: #fff;
+  padding: 10px 20px;
   margin-bottom: 20px;
 }
 
 nav ul {
   list-style-type: none;
-  padding: 0;
   margin: 0;
+  padding: 0;
 }
 
 nav ul li {
   display: inline;
-  margin-right: 20px;
+  margin-right: 10px;
 }
 
 nav ul li a {
+  color: #fff;
   text-decoration: none;
-  color: #333;
-  font-weight: bold;
-}
-
-nav ul li a:hover {
-  text-decoration: underline;
 }
 
 main {
-  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.make-transaction,
+.transactions {
+  background-color: #f9f9f9;
   padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.make-transaction form,
+.transactions table {
+  width: 100%;
+}
+
+.make-transaction label,
+.transactions th,
+.transactions td {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.make-transaction input[type="text"],
+.make-transaction button,
+.transactions table {
+  border-collapse: collapse;
+}
+
+.make-transaction input[type="text"],
+.make-transaction button {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+
+.make-transaction button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.make-transaction button:hover {
+  background-color: #0056b3;
 }
 
 .transactions table {
-  width: 100%;
-  border-collapse: collapse;
+  border: 1px solid #ddd;
 }
 
 .transactions th,
 .transactions td {
-  border: 1px solid #ccc;
-  padding: 8px;
-  text-align: left;
+  padding: 10px;
+  border: 1px solid #ddd;
 }
 
 .transactions th {
-  background-color: #f2f2f2;
+  background-color: #007bff;
+  color: #fff;
 }
 
 footer {
-  margin-top: 20px;
+  background-color: #333;
+  color: #fff;
   text-align: center;
-  color: #666;
+  padding: 10px 0;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
 }
