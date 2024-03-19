@@ -1,3 +1,26 @@
+<?php
+    session_start();
+    include('database.php');
+    include('helperFunctions.php');
+
+    $username = $_SESSION['username'];
+    $name = $_SESSION['name'];
+    $email = $_SESSION['email'];
+    $egn = $_SESSION['egn'];
+
+    $currentAccInfo = mysqli_fetch_assoc(
+    mysqli_query($conn, "
+      SELECT bank_account.*, currency.Name AS CurrencyName
+      FROM bank_account
+      JOIN currency ON bank_account.currency_ID = currency.ID
+      WHERE bank_account.Client_EGN = '$egn';
+    "));
+    
+    $currAccAmount = $currentAccInfo['Amount'];
+    $currAccIBAN = $currentAccInfo['IBAN'];
+    $currAccCurrency = $currentAccInfo['CurrencyName'];
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -5,7 +28,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Credits</title>
     <link rel="stylesheet" href="Style\styles.css" />
-    <!-- Включете вашия CSS файл тук -->
+    <script defer src="interest.js"></script>
   </head>
   <body>
     <header>
@@ -55,32 +78,25 @@
   </body>
 </html>
 
-<script>
-  function InterestUpdate() {
-    const rateElement = document.getElementById("interest_rate");
-    const durationInput = document.getElementById("duration");
-    rateElement.textContent = "1%";
+<?php 
+  if(isset($_POST['apply_credit']))
+  {
+    $HasCreditQuery = ("SELECT * FROM credit WHERE Bank_Account_IBAN = '$currAccIBAN'");
+    $result = mysqli_query($conn, $HasCreditQuery);
 
-    durationInput.addEventListener("change", function () {
-      let durationInputVal = durationInput.selectedOptions[0].value;
-      switch (durationInputVal) {
-        case "option1":
-          rateElement.textContent = "1%";
-          break;
-        case "option2":
-          rateElement.textContent = "1.5%";
-          break;
-        case "option3":
-          rateElement.textContent = "3%";
-          break;
-        case "option4":
-          rateElement.textContent = "5%";
-          break;
-        default:
-          return;
-          break;
-      }
-    });
+    if ($result && mysqli_num_rows($result) == 1){
+      echo '
+        <script>
+          alert("Трябва да си изплатите кредита преди да вземете нов!");
+        </script>';
+      header('Location: Credits.php');
+      exit();
+    }
+
+    $amount;
+    $interest;
+
+    $getCreditQuery = ("INSERT INTO credit (Amount, Interest, Repayment_term, Bank_Account_IBAN, Credit_Type_ID)
+    VALUES ('$amount', '$interest','$address', '$phone', '$email', '$currAccIBAN', '$hash')");
   }
-  InterestUpdate();
-</script>
+?>

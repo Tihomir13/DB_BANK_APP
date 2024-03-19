@@ -1,22 +1,24 @@
 <?php 
 session_start();
 include('database.php');
+include('helperFunctions.php');
 
-$username = $_SESSION['username'];
-$name = $_SESSION['name'];
-$email = $_SESSION['email'];
-$egn = $_SESSION['egn'];
+    $username = $_SESSION['username'];
+    $name = $_SESSION['name'];
+    $email = $_SESSION['email'];
+    $egn = $_SESSION['egn'];
 
-$currentAccInfo = mysqli_fetch_assoc(
-  mysqli_query($conn, "
-    SELECT bank_account.*, currency.Name AS CurrencyName
-    FROM bank_account
-    JOIN currency ON bank_account.currency_ID = currency.ID
-    WHERE bank_account.Client_EGN = '$egn';
-  "));
-$currAccAmount = $currentAccInfo['Amount'];
-$currAccIBAN = $currentAccInfo['IBAN'];
-$currAccCurrency = $currentAccInfo['CurrencyName'];
+    $currentAccInfo = mysqli_fetch_assoc(
+    mysqli_query($conn, "
+      SELECT bank_account.*, currency.Name AS CurrencyName
+      FROM bank_account
+      JOIN currency ON bank_account.currency_ID = currency.ID
+      WHERE bank_account.Client_EGN = '$egn';
+    "));
+
+    $currAccAmount = $currentAccInfo['Amount'];
+    $currAccIBAN = $currentAccInfo['IBAN'];
+    $currAccCurrency = $currentAccInfo['CurrencyName'];
 
 ?>
 
@@ -124,20 +126,20 @@ $currAccCurrency = $currentAccInfo['CurrencyName'];
 
       // Проверка за наличие на IBAN-а който е въведен
       if ($recAccQuery && mysqli_num_rows($recAccQuery) != 1){
-          echo '
-              <script>
-                alert("Несъществуващ IBAN!");
-              </script>';
-              return;
+        echo '
+          <script>
+            alert("Несъществуващ IBAN!");
+          </script>';
+        exit();
       }
       
       // Проверка за наличие на парични средства
       if($amountTransfer > $currAccAmount) {
         echo '
-              <script>
-                alert("Недостатъчни средства!");
-              </script>';
-      return;
+          <script>
+            alert("Недостатъчни средства!");
+          </script>';
+        exit();
       }
 
       $currAccAmount -= $amountTransfer;
