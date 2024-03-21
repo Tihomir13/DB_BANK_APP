@@ -84,7 +84,8 @@ include('helperFunctions.php');
                     ON transaction.Trans_Type_ID = trans_type.ID 
                     INNER JOIN employee 
                     ON transaction.Employee_EGN = employee.EGN 
-                    WHERE transaction.S_Bank_Account_IBAN = '$currAccIBAN'");
+                    WHERE transaction.S_Bank_Account_IBAN = '$currAccIBAN' 
+                    OR transaction.R_Bank_Account_IBAN = '$currAccIBAN'");
                     if($result) {
                     while($row = mysqli_fetch_assoc($result)){
                       ?>
