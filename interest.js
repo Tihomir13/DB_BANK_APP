@@ -18,10 +18,14 @@ function InterestUpdate() {
             case "option4":
                 rateElement.textContent = "5%";
                 break;
-            default:
-                return;
+            case "option5":
+                rateElement.textContent = "7.5%";
+                break;
+            case "option6":
+                rateElement.textContent = "10%";
                 break;
         }
     });
 }
+
 InterestUpdate();
