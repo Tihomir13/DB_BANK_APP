@@ -39,8 +39,8 @@
         <nav>
           <ul>
             <li><a href="#">Home</a></li>
-            <li><a href="Credits.php">Credits</a></li>
-            <li><a href="#">Transactions</a></li>
+            <li><a href="#">Credits</a></li>
+            <li><a href="Transactions.php">Transactions</a></li>
             <li><a href="#">Profile</a></li>
             <li><a href="LOGIN.php">Logout</a></li>
           </ul>
@@ -49,7 +49,7 @@
       <main style="height: 68vh">
         <section class="credit-form">
           <h2>Apply for Credit</h2>
-          <form action="Credits.php" method="get">
+          <form action="#" method="get">
             <div>
               <label for="amount">Amount:</label>
               <input type="text" id="amount" name="amount" placeholder="1000-100,000" style="text-align:center"required />
@@ -91,7 +91,7 @@
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Amount</th>
+                <th>Remaining Amount</th>
                 <th>Interest (%)</th>
                 <th>Repayment term</th>
                 <th>Credit Type</th>
@@ -276,10 +276,62 @@
     VALUES ('$loan', '$interest', '$new_date', '$currAccIBAN', '$loan_type')");
 
     mysqli_query($conn,$insertCreditQuery);
+
+    $new_amount = $currAccAmount + $amount;
+    $currAccUPDATE = 
+        "UPDATE bank_account
+        SET Amount = '$new_amount'
+        WHERE IBAN = '$currAccIBAN'";
+
+      mysqli_query($conn, $currAccUPDATE);
   }
 
   //Pay button
   if(isset($_GET['id'])){
+
+    $currAccCreditInfoQuery = mysqli_query($conn, "SELECT credit.*,
+                        credit_type.Type AS Credit_Type_Name
+                        FROM credit 
+                        INNER JOIN credit_type 
+                        ON credit.Credit_Type_ID = credit_type.ID  
+                        WHERE credit.Bank_Account_IBAN = '$currAccIBAN'");
+
+    $currAccCreditInfo = mysqli_fetch_assoc($currAccCreditInfoQuery);
+
+    $loan = $currAccCreditInfo['Amount'];
+    $interest = $currAccCreditInfo['Interest'];
+
+    switch($interest) {
+      case 1:
+          $months = 3;
+        break;
+      case 1.5:
+          $months = 6;
+        break;
+      case 3:
+          $months = 12;
+        break;
+      case 5:
+          $months = 24;
+        break;
+      case 7.5:
+          $months = 36;
+        break;
+      case 10:
+          $months = 48;
+        break;
+    }
+
     $price_month = $loan / $months;
+
+    $newAmount = $loan - $price_month;
+
+    $creditUpdateQuery = 
+        "UPDATE credit 
+        SET Amount = '$newAmount'
+        WHERE Bank_Account_IBAN = '$currAccIBAN'";
+
+    mysqli_query($conn,$creditUpdateQuery);
   }
+
 ?>
