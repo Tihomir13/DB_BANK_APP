@@ -1,11 +1,14 @@
 function InterestUpdate() {
     const rateElement = document.getElementById("interest_rate");
     const durationInput = document.getElementById("duration");
-    rateElement.textContent = "1%";
+    rateElement.textContent = "";
 
     durationInput.addEventListener("change", function () {
         let durationInputVal = durationInput.selectedOptions[0].value;
         switch (durationInputVal) {
+            case "option0":
+                rateElement.textContent = "";
+                break;
             case "option1":
                 rateElement.textContent = "1%";
                 break;

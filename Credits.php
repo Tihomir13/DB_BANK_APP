@@ -1,24 +1,24 @@
 <?php
-    session_start();
-    include('database.php');
-    include('helperFunctions.php');
+  session_start();
+  include('database.php');
+  include('helperFunctions.php');
 
-    $username = $_SESSION['username'];
-    $name = $_SESSION['name'];
-    $email = $_SESSION['email'];
-    $egn = $_SESSION['egn'];
+  $username = $_SESSION['username'];
+  $name = $_SESSION['name'];
+  $email = $_SESSION['email'];
+  $egn = $_SESSION['egn'];
 
-    $currentAccInfo = mysqli_fetch_assoc(
-    mysqli_query($conn, "
-      SELECT bank_account.*, currency.Name AS CurrencyName
-      FROM bank_account
-      JOIN currency ON bank_account.currency_ID = currency.ID
-      WHERE bank_account.Client_EGN = '$egn';
-    "));
-    
-    $currAccAmount = $currentAccInfo['Amount'];
-    $currAccIBAN = $currentAccInfo['IBAN'];
-    $currAccCurrency = $currentAccInfo['CurrencyName'];
+  $currentAccInfo = mysqli_fetch_assoc(
+  mysqli_query($conn, "
+    SELECT bank_account.*, currency.Name AS CurrencyName
+    FROM bank_account
+    JOIN currency ON bank_account.currency_ID = currency.ID
+    WHERE bank_account.Client_EGN = '$egn';
+  "));
+  
+  $currAccAmount = $currentAccInfo['Amount'];
+  $currAccIBAN = $currentAccInfo['IBAN'];
+  $currAccCurrency = $currentAccInfo['CurrencyName'];
 ?>
 
 <!DOCTYPE html>
@@ -28,6 +28,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>User Dashboard</title>
     <link rel="stylesheet" href="Style\styles.css" />
+    <script defer src="./interest.js"></script>
   </head>
   <body>
     <div class="container">
@@ -132,43 +133,6 @@
         <p>&copy; 2024 BankName. All rights reserved.</p>
       </footer>
     </div>
-
-    <script>
-      function InterestUpdate() {
-      const rateElement = document.getElementById("interest_rate");
-      const durationInput = document.getElementById("duration");
-      rateElement.textContent = "";
-
-      durationInput.addEventListener("change", function () {
-          let durationInputVal = durationInput.selectedOptions[0].value;
-          switch (durationInputVal) {
-              case "option0":
-                  rateElement.textContent = "";
-                  break;
-              case "option1":
-                  rateElement.textContent = "1%";
-                  break;
-              case "option2":
-                  rateElement.textContent = "1.5%";
-                  break;
-              case "option3":
-                  rateElement.textContent = "3%";
-                  break;
-              case "option4":
-                  rateElement.textContent = "5%";
-                  break;
-              case "option5":
-                  rateElement.textContent = "7.5%";
-                  break;
-              case "option6":
-                  rateElement.textContent = "10%";
-                  break;
-          }
-      });
-    }
-
-    InterestUpdate();
-</script>
   </body>
 </html>
 
