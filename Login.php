@@ -54,11 +54,10 @@ if(isset($_POST["login"])){
       header("Location: Transactions.php");
       exit();
     } else {
-      ?>
-      <script>
-        alert("Грешно потребителско име или парола.");
-      </script>
-      <?php
+      echo '
+        <script>
+          alert("Грешно потребителско име или парола.");
+        </script>';
     }
   } 
   else if ($Employee && mysqli_num_rows($Employee) == 1) {
@@ -74,19 +73,17 @@ if(isset($_POST["login"])){
       header("Location: Transactions.php");
       exit();
     } else {
-      ?>
-      <script>
-        alert("Грешно потребителско име или парола.");
-      </script>
-      <?php
+      echo '
+        <script>
+          alert("Грешно потребителско име или парола.");
+        </script>';
     }
   }
   else {
-    ?>
-      <script>
-        alert("Грешно потребителско име или парола.");
-      </script>
-      <?php
+    echo '
+        <script>
+          alert("Грешно потребителско име или парола.");
+        </script>';
   }
 }
 ?>

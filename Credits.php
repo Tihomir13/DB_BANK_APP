@@ -49,7 +49,10 @@
       </header>
       <main style="height: 68vh">
         <section class="credit-form">
-          <h2>Apply for Credit</h2>
+        <div class="transaction-header-section" style="display: flex; justify-content: space-between">
+          <h2>Apply for Credit 
+          <h2 style="position:relative; right: 125px;">Amount: <?php echo "$currAccAmount $currAccCurrency";?></h2>
+        </div>
           <form action="#" method="get">
             <div>
               <label for="amount">Amount:</label>
@@ -185,6 +188,7 @@
         WHERE Bank_Account_IBAN = '$currAccIBAN'";
 
     mysqli_query($conn,$creditUpdateQuery);
+    exit();
   }
 
 ?>
