@@ -31,9 +31,28 @@
       <main style="height: 68vh">
         <section class="credit-form">
         <div class="transaction-header-section" style="display: flex; justify-content: space-between">
-          <h2>Apply for Credit 
-          <h2 style="position:relative; right: 125px;">Amount: <?php echo "$currAccAmount $currAccCurrency";?></h2>
+        <?php 
+          if(isset($currAccAmount))
+            echo '<h2>Apply for Credit </h2>'
+          ?>
+          <h2 id="accType" style="position:relative; right: 125px;">
+          <?php
+            if (isset($currAccAmount)) 
+              echo "Amount: $currAccAmount $currAccCurrency"; 
+            else {
+              echo "
+                <script>
+                  let element = document.querySelector('#accType');
+                  element.style.color = 'red';
+                  element.style.right = '-815px';
+                </script>";
+              echo "Banker Account";
+            }
+          ?>
         </div>
+        <?php 
+          if (isset($currAccAmount))
+          echo '
           <form action="#" method="get">
             <div>
               <label for="amount">Amount:</label>
@@ -68,10 +87,11 @@
             <div>
               <button type="submit" name="apply_credit">Apply</button>
             </div>
-          </form>
+          </form>';
+          ?>
         </section>
         <section class="transactions">
-          <h2>Recent Transactions</h2>
+          <h2>Recent Credits</h2>
           <table>
             <thead>
               <tr>
@@ -84,12 +104,15 @@
                 <th>Remaining installments</th>
                 <th>Repayment term</th>
                 <th>Credit Type</th>
-                <th>Monthly installment</th>
+                <?php if(isset($currAccAmount))
+                echo '<th>Monthly installment</th>';
+                ?>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <?php
+                  if (isset($currAccAmount)){
                     $result = mysqli_query($conn, "SELECT credit.*,
                     credit_type.Type AS Credit_Type_Name
                     FROM credit 
@@ -110,12 +133,40 @@
                             <td><?php echo $row ['Repayment_Period'];?></td>
                             <td><?php echo $row ['Credit_Type_Name'];?></td>
                             <td><?php echo '<a href="Credits.php?id=' . $row['ID'] . '">Pay</a>'?></td>
-              </tr>
-              <?php
+                    </tr>
+                <?php
                           }
                         }
                         else echo"Error";
+                  }
+                  else {
+
+                    $result = mysqli_query($conn, "SELECT credit.*,
+                      credit_type.Type AS Credit_Type_Name
+                      FROM credit 
+                      INNER JOIN credit_type 
+                      ON credit.Credit_Type_ID = credit_type.ID");
+  
+                      if($result) {
+                      while($row = mysqli_fetch_assoc($result)){
                         ?>
+                              <td><?php echo $row ['ID'];?></td>
+                              <td><?php echo $row ['Total_amount'];?></td>
+                              <td><?php echo $row ['Amount'];?></td>
+                              <td><?php echo $row ['Interest'];?></td>
+                              <td><?php echo $row ['Remaining_amount'];?></td>
+                              <td><?php echo $row ['Amount_installment'];?></td>
+                              <td><?php echo $row ['Remaining_installments'];?></td>
+                              <td><?php echo $row ['Repayment_Period'];?></td>
+                              <td><?php echo $row ['Credit_Type_Name'];?></td>
+                            </tr>
+                            <?php
+                            }
+                          }
+                          else echo"Error";
+                          
+                        }
+                    ?>
               <!-- Add more rows for additional transactions -->
             </tbody>
           </table>

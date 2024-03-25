@@ -45,56 +45,56 @@ function SetUserData($userData) {
 }
 
 function processTransfer($conn, $currAccIBAN, $currAccAmount) {
-    if(isset($_POST["transferButton"])){
-        $amountTransfer = $_POST['amount'];
-        $recipientIBAN = $_POST['recipient'];
-        
-        $recAccQuery = mysqli_query($conn, "SELECT * FROM bank_account WHERE IBAN = '$recipientIBAN'");
-        $recipientAccInfo = mysqli_fetch_assoc($recAccQuery);
-        
-        $recAccIBAN = $recipientAccInfo['IBAN'];
-        $recAccAmount = $recipientAccInfo['Amount'];
-  
-        // Проверка за наличие на IBAN-а който е въведен
-        if ($recAccQuery && mysqli_num_rows($recAccQuery) != 1){
-          echo '
-            <script>
-              alert("Несъществуващ IBAN!");
-            </script>';
-          exit();
-        }
-        
-        // Проверка за наличие на парични средства
-        if($amountTransfer > $currAccAmount) {
-          echo '
-            <script>
-              alert("Недостатъчни средства!");
-            </script>';
-          exit();
-        }
-  
-        $currAccAmount -= $amountTransfer;
-        $recAccAmount += $amountTransfer;
-  
-        $randomQuery = "SELECT EGN, Name FROM employee WHERE Position_ID = 2 ORDER BY RAND() LIMIT 1";
-        $randomEmployee = mysqli_fetch_assoc(mysqli_query($conn, $randomQuery));
-        $EmployeeName = $randomEmployee['EGN'];
-  
-        $transaction = "INSERT INTO transaction (Amount, Trans_Type_ID, S_Bank_Account_IBAN, R_Bank_Account_IBAN, Employee_EGN)
-        VALUES ('$amountTransfer', 3, '$currAccIBAN', '$recAccIBAN', '$EmployeeName')";
+  if(isset($_POST["transferButton"])){
+      $amountTransfer = $_POST['amount'];
+      $recipientIBAN = $_POST['recipient'];
+      
+      $recAccQuery = mysqli_query($conn, "SELECT * FROM bank_account WHERE IBAN = '$recipientIBAN'");
+      $recipientAccInfo = mysqli_fetch_assoc($recAccQuery);
+      
+      $recAccIBAN = $recipientAccInfo['IBAN'];
+      $recAccAmount = $recipientAccInfo['Amount'];
 
-        updateAccAmount($conn, $currAccAmount, $currAccIBAN);
-        updateAccAmount($conn, $recAccAmount, $recAccIBAN);
-
-        mysqli_query($conn, $transaction);
-        
+      // Проверка за наличие на IBAN-а който е въведен
+      if ($recAccQuery && mysqli_num_rows($recAccQuery) != 1){
         echo '
-        <script> 
-          document.getElementsByName("transferButton").addEventListener("click", function() {
-          location.reload();
-          });
-        </script>';
+          <script>
+            alert("Несъществуващ IBAN!");
+          </script>';
+        exit();
       }
+      
+      // Проверка за наличие на парични средства
+      if($amountTransfer > $currAccAmount) {
+        echo '
+          <script>
+            alert("Недостатъчни средства!");
+          </script>';
+        exit();
+      }
+
+      $currAccAmount -= $amountTransfer;
+      $recAccAmount += $amountTransfer;
+
+      $randomQuery = "SELECT EGN, Name FROM employee WHERE Position_ID = 2 ORDER BY RAND() LIMIT 1";
+      $randomEmployee = mysqli_fetch_assoc(mysqli_query($conn, $randomQuery));
+      $EmployeeName = $randomEmployee['EGN'];
+
+      $transaction = "INSERT INTO transaction (Amount, Trans_Type_ID, S_Bank_Account_IBAN, R_Bank_Account_IBAN, Employee_EGN)
+      VALUES ('$amountTransfer', 3, '$currAccIBAN', '$recAccIBAN', '$EmployeeName')";
+
+      updateAccAmount($conn, $currAccAmount, $currAccIBAN);
+      updateAccAmount($conn, $recAccAmount, $recAccIBAN);
+
+      mysqli_query($conn, $transaction);
+      
+      echo '
+      <script> 
+        document.getElementsByName("transferButton").addEventListener("click", function() {
+        location.reload();
+        });
+      </script>';
+    }
 }
 
 function applyCredit($conn, $currAccIBAN, $currAccAmount) {
@@ -250,5 +250,4 @@ function updateCreditInfo($conn, $currAccIBAN, $currAccAmount) {
   mysqli_query($conn, $creditUpdateQuery);
   exit();
 }
-
 ?>

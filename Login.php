@@ -62,10 +62,10 @@ if(isset($_POST["login"])){
   } 
   else if ($Employee && mysqli_num_rows($Employee) == 1) {
     $userdata = mysqli_fetch_assoc($Employee);
-    $hashedpass = $userdata['password'];
+    $enteredPass = $userdata['password'];
     
     // Проверка за съвпадение на хешираната парола
-    if (password_verify($password, $hashedpass)) {
+    if ($password == $enteredPass) {
       session_start();
       SetUserData($userdata);
 
