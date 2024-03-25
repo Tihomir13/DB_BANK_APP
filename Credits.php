@@ -1,24 +1,5 @@
 <?php
-  session_start();
-  include('database.php');
-  include('helperFunctions.php');
-
-  $username = $_SESSION['username'];
-  $name = $_SESSION['name'];
-  $email = $_SESSION['email'];
-  $egn = $_SESSION['egn'];
-
-  $currentAccInfo = mysqli_fetch_assoc(
-  mysqli_query($conn, "
-    SELECT bank_account.*, currency.Name AS CurrencyName
-    FROM bank_account
-    JOIN currency ON bank_account.currency_ID = currency.ID
-    WHERE bank_account.Client_EGN = '$egn';
-  "));
-  
-  $currAccAmount = $currentAccInfo['Amount'];
-  $currAccIBAN = $currentAccInfo['IBAN'];
-  $currAccCurrency = $currentAccInfo['CurrencyName'];
+  include("User_Acc_Info.php");
 ?>
 
 <!DOCTYPE html>
@@ -95,8 +76,12 @@
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Remaining Amount</th>
+                <th>Total repayment amount</th>
+                <th>Total Amount Received by Client</th>
                 <th>Interest (%)</th>
+                <th>Remaining Amount</th>
+                <th>Amount for an installment</th>
+                <th>Remaining installments</th>
                 <th>Repayment term</th>
                 <th>Credit Type</th>
                 <th>Monthly installment</th>
@@ -116,8 +101,12 @@
                     while($row = mysqli_fetch_assoc($result)){
                       ?>
                             <td><?php echo $row ['ID'];?></td>
+                            <td><?php echo $row ['Total_amount'];?></td>
                             <td><?php echo $row ['Amount'];?></td>
                             <td><?php echo $row ['Interest'];?></td>
+                            <td><?php echo $row ['Remaining_amount'];?></td>
+                            <td><?php echo $row ['Amount_installment'];?></td>
+                            <td><?php echo $row ['Remaining_installments'];?></td>
                             <td><?php echo $row ['Repayment_Period'];?></td>
                             <td><?php echo $row ['Credit_Type_Name'];?></td>
                             <td><?php echo '<a href="Credits.php?id=' . $row['ID'] . '">Pay</a>'?></td>
@@ -141,54 +130,5 @@
 
 <?php 
   applyCredit($conn, $currAccIBAN, $currAccAmount);
-
-  //Pay button
-  if(isset($_GET['id'])){
-
-    $currAccCreditInfoQuery = mysqli_query($conn, "SELECT credit.*,
-                        credit_type.Type AS Credit_Type_Name
-                        FROM credit 
-                        INNER JOIN credit_type 
-                        ON credit.Credit_Type_ID = credit_type.ID  
-                        WHERE credit.Bank_Account_IBAN = '$currAccIBAN'");
-
-    $currAccCreditInfo = mysqli_fetch_assoc($currAccCreditInfoQuery);
-
-    $loan = $currAccCreditInfo['Amount'];
-    $interest = $currAccCreditInfo['Interest'];
-
-    switch($interest) {
-      case 1:
-          $months = 3;
-        break;
-      case 1.5:
-          $months = 6;
-        break;
-      case 3:
-          $months = 12;
-        break;
-      case 5:
-          $months = 24;
-        break;
-      case 7.5:
-          $months = 36;
-        break;
-      case 10:
-          $months = 48;
-        break;
-    }
-
-    $price_month = $loan / $months;
-
-    $newAmount = $loan - $price_month;
-
-    $creditUpdateQuery = 
-        "UPDATE credit 
-        SET Amount = '$newAmount'
-        WHERE Bank_Account_IBAN = '$currAccIBAN'";
-
-    mysqli_query($conn,$creditUpdateQuery);
-    exit();
-  }
-
+  updateCreditInfo($conn, $currAccIBAN, $currAccAmount);
 ?>

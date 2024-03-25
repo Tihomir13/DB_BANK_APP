@@ -7,6 +7,15 @@ function CreateIBAN() {
     return $IBAN;
 }
 
+function updateAccAmount($conn, $newAmount, $currAccIBAN) {
+  $AccUPDATE = 
+  "UPDATE bank_account 
+  SET Amount = '$newAmount'
+  WHERE IBAN = '$currAccIBAN'";
+
+  mysqli_query($conn, $AccUPDATE);
+}
+
 function creatingBankAccount($Client_EGN, $conn){
     $IBAN = CreateIBAN();
     $Interest = 0.00;
@@ -73,20 +82,11 @@ function processTransfer($conn, $currAccIBAN, $currAccAmount) {
   
         $transaction = "INSERT INTO transaction (Amount, Trans_Type_ID, S_Bank_Account_IBAN, R_Bank_Account_IBAN, Employee_EGN)
         VALUES ('$amountTransfer', 3, '$currAccIBAN', '$recAccIBAN', '$EmployeeName')";
-  
-        $currAccUPDATE = 
-          "UPDATE bank_account 
-          SET Amount = '$currAccAmount'
-          WHERE IBAN = '$currAccIBAN'";
-  
-        $recAccUPDATE = 
-          "UPDATE bank_account 
-          SET Amount = '$recAccAmount'
-          WHERE IBAN = '$recAccIBAN'";
-  
+
+        updateAccAmount($conn, $currAccAmount, $currAccIBAN);
+        updateAccAmount($conn, $recAccAmount, $recAccIBAN);
+
         mysqli_query($conn, $transaction);
-        mysqli_query($conn, $currAccUPDATE);
-        mysqli_query($conn, $recAccUPDATE);
         
         echo '
         <script> 
@@ -98,116 +98,157 @@ function processTransfer($conn, $currAccIBAN, $currAccAmount) {
 }
 
 function applyCredit($conn, $currAccIBAN, $currAccAmount) {
-    if(isset($_GET['apply_credit'])){
-        $amount = $_GET['amount'];
+  if(isset($_GET['apply_credit'])){
+    $amount = $_GET['amount'];
+
+    if($amount < 1000 || $amount > 100000){
+      echo '
+        <script>
+          alert("Enter Amount between 1000 and 100,000!");
+        </script>';
+      exit();
+    }
+
+    if($_GET['duration'] == "option0"){
+      echo '
+        <script>
+          alert("Enter Duration!");
+        </script>';
+      exit();
+    }
+
+    if($_GET['loan_type'] == "option0"){
+      echo '
+        <script>
+          alert("Enter Loan type!");
+        </script>';
+      exit();
+    }
+
+    $HasCreditQuery = ("SELECT * FROM credit WHERE Bank_Account_IBAN = '$currAccIBAN'");
+    $result = mysqli_query($conn, $HasCreditQuery);
+
+    if ($result && mysqli_num_rows($result) == 1){
+      echo '
+        <script>
+          alert("Трябва да си изплатите кредита преди да вземете нов!");
+        </script>';
+      exit();
+    }
+
+    $duration = $_GET['duration'];
+
+    switch($duration) {
+      case "option1":
+        $coefficient = 1.01;
+        $interest = 1;
+        $time = "+3 months";
+        $months = 3;
+        break;
+      case "option2":
+        $coefficient = 1.015;
+        $interest = 1.5;
+        $time = "+6 months";
+        $months = 6;
+        break;
+      case "option3":
+        $coefficient = 1.03;
+        $interest = 3;
+        $time = "+1 year";
+        $months = 12;
+        break;
+      case "option4":
+        $coefficient = 1.05;
+        $interest = 5;
+        $time = "+2 years";
+        $months = 24;
+        break;
+      case "option5":
+        $coefficient = 1.075;
+        $interest = 7.5;
+        $time = "+3 years";
+        $months = 36;
+        break;
+      case "option6":
+        $coefficient = 1.1;
+        $interest = 10;
+        $time = "+4 years";
+        $months = 48;
+        break;
+    };
+
+    $type = $_GET['loan_type'];
+    switch($type) {
+      case "option1":
+        $loan_type = 1;
+        break;
+      case "option2":
+        $loan_type = 2;
+        break;
+      case "option3":
+        $loan_type = 3;
+        break;
+    }
+
+    $current_date = date("Y-m-d"); 
+    $new_date = date("Y-m-d", strtotime($time, strtotime($current_date))); 
+
+    // Пресмятане на новият amount 
+    $loan = $amount * $coefficient;
     
-        if($amount < 1000 || $amount > 100000){
-          echo '
-            <script>
-              alert("Enter Amount between 1000 and 100,000!");
-            </script>';
-          exit();
-        }
-    
-        if($_GET['duration'] == "option0"){
-          echo '
-            <script>
-              alert("Enter Duration!");
-            </script>';
-          exit();
-        }
-    
-        if($_GET['loan_type'] == "option0"){
-          echo '
-            <script>
-              alert("Enter Loan type!");
-            </script>';
-          exit();
-        }
-    
-        $HasCreditQuery = ("SELECT * FROM credit WHERE Bank_Account_IBAN = '$currAccIBAN'");
-        $result = mysqli_query($conn, $HasCreditQuery);
-    
-        if ($result && mysqli_num_rows($result) == 1){
-          echo '
-            <script>
-              alert("Трябва да си изплатите кредита преди да вземете нов!");
-            </script>';
-          exit();
-        }
-    
-        $duration = $_GET['duration'];
-    
-        switch($duration) {
-          case "option1":
-            $coefficient = 1.01;
-            $interest = 1;
-            $time = "+3 months";
-            $months = 3;
-            break;
-          case "option2":
-            $coefficient = 1.015;
-            $interest = 1.5;
-            $time = "+6 months";
-            $months = 6;
-            break;
-          case "option3":
-            $coefficient = 1.03;
-            $interest = 3;
-            $time = "+1 year";
-            $months = 12;
-            break;
-          case "option4":
-            $coefficient = 1.05;
-            $interest = 5;
-            $time = "+2 years";
-            $months = 24;
-            break;
-          case "option5":
-            $coefficient = 1.075;
-            $interest = 7.5;
-            $time = "+3 years";
-            $months = 36;
-            break;
-          case "option6":
-            $coefficient = 1.1;
-            $interest = 10;
-            $time = "+4 years";
-            $months = 48;
-            break;
-        };
-    
-        $type = $_GET['loan_type'];
-        switch($type) {
-          case "option1":
-            $loan_type = 1;
-            break;
-          case "option2":
-            $loan_type = 2;
-            break;
-          case "option3":
-            $loan_type = 3;
-            break;
-        }
-    
-        $current_date = date("Y-m-d"); 
-        $new_date = date("Y-m-d", strtotime($time, strtotime($current_date))); 
-    
-        // Пресмятане на новият amount 
-        $loan = $amount * $coefficient;
-        
-        $insertCreditQuery = ("INSERT INTO credit (Amount, Interest, Repayment_Period, Bank_Account_IBAN, Credit_Type_ID)
-        VALUES ('$loan', '$interest', '$new_date', '$currAccIBAN', '$loan_type')");
-    
-        mysqli_query($conn,$insertCreditQuery);
-    
-        $new_amount = $currAccAmount + $amount;
-        $currAccUPDATE = 
-            "UPDATE bank_account
-            SET Amount = '$new_amount'
-            WHERE IBAN = '$currAccIBAN'";
-    
-          mysqli_query($conn, $currAccUPDATE);
-      }
+    $amountPerInstallment = round($loan / $months, 2);
+
+    $insertCreditQuery = ("INSERT INTO credit (Total_amount, Amount, Interest, Remaining_amount, Amount_installment, Remaining_installments, Repayment_Period, Bank_Account_IBAN, Credit_Type_ID)
+    VALUES ('$loan', '$amount', '$interest', '$loan', '$amountPerInstallment', '$months','$new_date','$currAccIBAN', '$loan_type')");
+
+    mysqli_query($conn, $insertCreditQuery);
+
+    // Добавяне на пари в акаунта
+    $currAccAmount += $amount;
+
+    $currAccUPDATE = 
+        "UPDATE bank_account
+        SET Amount = '$currAccAmount'
+        WHERE IBAN = '$currAccIBAN'";
+
+      mysqli_query($conn, $currAccUPDATE);
+      exit();
+  }
 }
+
+function updateCreditInfo($conn, $currAccIBAN, $currAccAmount) {
+  // Извличане на информация за кредита
+  $currAccCreditInfoQuery = mysqli_query($conn, "SELECT credit.*, credit_type.Type AS Credit_Type_Name
+                      FROM credit 
+                      INNER JOIN credit_type 
+                      ON credit.Credit_Type_ID = credit_type.ID  
+                      WHERE credit.Bank_Account_IBAN = '$currAccIBAN'");
+
+  $currAccCreditInfo = mysqli_fetch_assoc($currAccCreditInfoQuery);
+
+  // Извличане на стойности от информацията за кредита
+  $remaining_amount = $currAccCreditInfo['Remaining_amount']; // Оставащ кредит
+  $interest = $currAccCreditInfo['Interest'];
+  $remaining_installments = $currAccCreditInfo['Remaining_installments']; // Оставащи месеци/вноски
+  $price_month = $currAccCreditInfo['Amount_installment']; 
+
+  $remaining_amount -= $price_month;
+  $remaining_installments -= 1;
+
+  // Актуализация на стойностите в базата данни
+  if ($remaining_installments == 0) {
+      $creditUpdateQuery = "DELETE FROM credit WHERE Bank_Account_IBAN = '$currAccIBAN'";
+  } else {
+      $creditUpdateQuery = "UPDATE credit 
+                          SET Remaining_amount = '$remaining_amount',
+                              Remaining_installments = '$remaining_installments'
+                          WHERE Bank_Account_IBAN = '$currAccIBAN'";
+  }
+
+  $currAccAmount -= $price_month;
+  updateAccAmount($conn, $currAccAmount, $currAccIBAN);
+  mysqli_query($conn, $creditUpdateQuery);
+  exit();
+}
+
 ?>

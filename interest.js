@@ -13,7 +13,7 @@ function InterestUpdate() {
                 rateElement.textContent = "1%";
                 break;
             case "option2":
-                rateElement.textContent = "1.5%";
+                rateElement.textContent = "2%";
                 break;
             case "option3":
                 rateElement.textContent = "3%";
