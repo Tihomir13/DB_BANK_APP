@@ -42,6 +42,8 @@ function SetUserData($userData) {
     $_SESSION['name'] = $userData['Name'];
     $_SESSION['email'] = $userData['Email'];
     $_SESSION['egn'] = $userData['EGN'];
+    $_SESSION['address'] = $userData['Address'];
+    $_SESSION['phone_number'] = $userData['Phone_number'];
 }
 
 function processTransfer($conn, $currAccIBAN, $currAccAmount) {
@@ -98,7 +100,6 @@ function processTransfer($conn, $currAccIBAN, $currAccAmount) {
 }
 
 function applyCredit($conn, $currAccIBAN, $currAccAmount) {
-  if(isset($_GET['apply_credit'])){
     $amount = $_GET['amount'];
 
     if($amount < 1000 || $amount > 100000){
@@ -213,8 +214,8 @@ function applyCredit($conn, $currAccIBAN, $currAccAmount) {
 
       mysqli_query($conn, $currAccUPDATE);
       exit();
-  }
 }
+
 
 function updateCreditInfo($conn, $currAccIBAN, $currAccAmount) {
   // Извличане на информация за кредита

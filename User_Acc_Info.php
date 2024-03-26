@@ -7,6 +7,8 @@
   $name = $_SESSION['name'];
   $email = $_SESSION['email'];
   $egn = $_SESSION['egn'];
+  $address = $_SESSION['address'];
+  $phone_number = $_SESSION['phone_number'];
 
   $Client = mysqli_query($conn, "SELECT * FROM client WHERE username = '$username'");
 

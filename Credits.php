@@ -20,10 +20,10 @@
         >
         <nav>
           <ul>
-            <li><a href="#">Home</a></li>
+            <li><a href="home.php">Home</a></li>
             <li><a href="#">Credits</a></li>
             <li><a href="Transactions.php">Transactions</a></li>
-            <li><a href="#">Profile</a></li>
+            <li><a href="Profile.php">Profile</a></li>
             <li><a href="LOGIN.php">Logout</a></li>
           </ul>
         </nav>
@@ -179,7 +179,10 @@
   </body>
 </html>
 
-<?php 
+<?php
+  if(isset($_GET['apply_credit']))
   applyCredit($conn, $currAccIBAN, $currAccAmount);
+
+  if(isset($_GET["id"]))
   updateCreditInfo($conn, $currAccIBAN, $currAccAmount);
 ?>
