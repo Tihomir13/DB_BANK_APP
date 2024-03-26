@@ -132,7 +132,7 @@ function applyCredit($conn, $currAccIBAN, $currAccAmount) {
     if ($result && mysqli_num_rows($result) == 1){
       echo '
         <script>
-          alert("Трябва да си изплатите кредита преди да вземете нов!");
+          alert("You have to pay off your loan before you get a new one!");
         </script>';
       exit();
     }

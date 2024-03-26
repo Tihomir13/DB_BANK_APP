@@ -8,6 +8,55 @@ include("User_Acc_Info.php");
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile</title>
+    <script src="helperJS.js"></script>
+    <?php 
+        // include("Bootstrap.php");
+    ?>
+    <style>
+        button {
+            background-color: #EA4C89;
+            border-radius: 8px;
+            border-style: none;
+            box-sizing: border-box;
+            color: #FFFFFF;
+            cursor: pointer;
+            display: inline-block;
+            font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            height: 40px;
+            line-height: 20px;
+            list-style: none;
+            margin: 0;
+            outline: none;
+            padding: 10px 16px;
+            position: relative;
+            text-align: center;
+            text-decoration: none;
+            transition: color 100ms;
+            vertical-align: baseline;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+        }
+
+        .submit:hover,
+        .submit:focus {
+        background-color: darkblue;
+        }
+
+        .delete:hover,
+        .delete:focus {
+        background-color: darkred;
+        }
+
+        .submit {
+            background-color: blue;
+        }
+        .delete {
+            background-color: red;
+        }
+    </style>
     <link rel="stylesheet" href="Style\styles.css">
 </head>
 <body>
@@ -28,12 +77,17 @@ include("User_Acc_Info.php");
         <?php if(isset($currAccAmount)) { ?>
             <section class="profile-info">
                 <h2>User Information</h2> 
-                <form action="#" method="post" style="display: inline-flex; flex-direction: column;">
+                <form action="#" method="post" style="display: flex; gap: 30px">
+                <div style="display: inline-flex; flex-direction: column;">
                     <input style="margin-top: 8px" type="text" required name="newName" value="<?php echo $name ?>"/>
-                    <input style="margin-top: 8px" type="text" required name="newEmail" value="<?php echo $email ?>"/>
+                    <input style="margin-top: 8px" type="email" required name="newEmail" value="<?php echo $email ?>"/>
                     <input style="margin-top: 8px" type="text" required name="newAddress" value="<?php echo $address ?>"/>
-                    <input style="margin-top: 8px" type="text" required name="newPhone_number" value="<?php echo $phone_number ?>"/></p>
-                    <button type="submit" name="editUserInfo">Edit</button>
+                    <input style="margin-top: 8px" type="tel" pattern="[0-9]{10}" required name="newPhone_number" value="<?php echo $phone_number ?>"/>
+                </div>
+                <div style="display: inline-flex; flex-direction: column; gap: 10px">
+                    <button class="submit" style="margin-top: 8px" type="submit" name="editUserInfo">Save</button>
+                    <button class="delete" type="submit" name="deleteUser">Delete Account</button>
+                </div>
                 </form>
             </section>
         <?php } 
@@ -98,6 +152,34 @@ include("User_Acc_Info.php");
                             Phone_number = '$newPhone_number'
                             WHERE EGN = '$egn'";
                                     
-        $updateClient = mysqli_query($conn,$updateClientQuery);
+        $updateClient = mysqli_query($conn, $updateClientQuery);
+        exit();
+    }
+
+    if(isset($_POST["deleteUser"])){
+
+        
+        $HasCreditQuery = ("SELECT * FROM credit WHERE Bank_Account_IBAN = '$currAccIBAN'");
+        $result = mysqli_query($conn, $HasCreditQuery);
+        
+        if ($result && mysqli_num_rows($result) == 1){
+            echo '
+            <script>
+            alert("You have to pay off your loan before you delete your Bank Account!");
+            </script>';
+            exit();
+        };
+
+        echo " <script>
+            deleteVerify();
+        </script>";
+
+        $deleteBankAcc = "DELETE FROM bank_account WHERE IBAN = '$currAccIBAN'";
+        $deleteUser = "DELETE FROM client WHERE EGN = '$egn'";
+        
+        $deleteBankAcc = mysqli_query($conn,$deleteBankAcc);
+        $deleteClient = mysqli_query($conn,$deleteUser);
+
+        header("Location: Login.php");
     }
 ?>

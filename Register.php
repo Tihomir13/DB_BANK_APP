@@ -23,7 +23,7 @@
             <input type="email" placeholder="Email" required name="Email-Client">
             <input type="text" placeholder="EGN" required name="EGN-Client">
             <input type="text" placeholder="Address" required name="Address-Client">
-            <input type="tel" placeholder="Phone number" required name="Phone-Client">
+            <input type="tel" pattern="[0-9]{10}" placeholder="Phone number" required name="Phone-Client">
             <button type="submit" name="register">Register</button>
             <p>Already have an account? <a href="login.php">Log in here</a></p>
         </form>

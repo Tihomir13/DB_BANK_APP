@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>User Dashboard</title>
     <link rel="stylesheet" href="Style\styles.css" />
-    <script defer src="./interest.js"></script>
+    <script defer src="./helperJS.js"></script>
   </head>
   <body>
     <div class="container">
@@ -163,8 +163,7 @@
                             <?php
                             }
                           }
-                          else echo"Error";
-                          
+                          else echo"Error";                       
                         }
                     ?>
               <!-- Add more rows for additional transactions -->
@@ -176,6 +175,9 @@
         <p>&copy; 2024 BankName. All rights reserved.</p>
       </footer>
     </div>
+    <script>
+      InterestUpdate();
+    </script>
   </body>
 </html>
 

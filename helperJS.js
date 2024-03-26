@@ -31,4 +31,23 @@ function InterestUpdate() {
     });
 }
 
-InterestUpdate();
+function generateWord() {
+    let word = '';
+    let str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
+        'abcdefghijklmnopqrstuvwxyz0123456789@#$';
+
+    for (let i = 1; i <= 5; i++) {
+        let char = Math.floor(Math.random()
+            * str.length + 1);
+
+        word += str.charAt(char)
+    }
+    return word;
+}
+
+function deleteVerify() {
+    const random = generateWord();
+    const answer = prompt(`Please enter: ${random} to confirm.`);
+    if (answer != random)
+        window.location.replace("Profile.php");
+}
