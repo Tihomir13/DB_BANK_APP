@@ -16,10 +16,10 @@
         <h1>Welcome, <?php echo $name?></h1>
         <nav>
           <ul>
-            <li><a href="home.php">Home</a></li>
+            <li><a href="index.php">Home</a></li>
             <li><a href="Credits.php">Credits</a></li>
             <li><a href="#">Transactions</a></li>
-            <li><a href="Profile.php">Profile</a></li>
+            <li><a href="Profile.php"><?php echo (isset($currAccAmount)) ? 'Profile' : 'Clients'; ?></a></li>
             <li><a href="LOGIN.php">Logout</a></li>
           </ul>
         </nav> 

@@ -51,7 +51,7 @@ if(isset($_POST["login"])){
       SetUserData($userdata);
       
       // Пренасочване към страницата за транзакции
-      header("Location: Transactions.php");
+      header("Location: index.php");
       exit();
     } else {
       echo '
@@ -70,7 +70,7 @@ if(isset($_POST["login"])){
       SetUserData($userdata);
 
       // Пренасочване към страницата за транзакции
-      header("Location: Transactions.php");
+      header("Location: index.php");
       exit();
     } else {
       echo '

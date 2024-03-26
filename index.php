@@ -1,3 +1,7 @@
+<?php 
+  include("User_Acc_Info.php");
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,7 +19,7 @@
                 <li><a href="#">Home</a></li>
                 <li><a href="Credits.php">Credits</a></li>
                 <li><a href="Transactions.php">Transactions</a></li>
-                <li><a href="Profile.php">Profile</a></li>
+                <li><a href="Profile.php"><?php echo (isset($currAccAmount)) ? 'Profile' : 'Clients'; ?></a></li>
                 <li><a href="LOGIN.php">Logout</a></li>
             </ul>
         </nav>
