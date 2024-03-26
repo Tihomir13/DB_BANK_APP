@@ -153,6 +153,11 @@ include("User_Acc_Info.php");
                             WHERE EGN = '$egn'";
                                     
         $updateClient = mysqli_query($conn, $updateClientQuery);
+
+        $name = $newName;
+        $email = $newEmail;
+        $address = $newAddress;
+        $phone_number = $newPhone_number;
         exit();
     }
 

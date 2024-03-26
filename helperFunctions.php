@@ -229,7 +229,6 @@ function updateCreditInfo($conn, $currAccIBAN, $currAccAmount) {
 
   // Извличане на стойности от информацията за кредита
   $remaining_amount = $currAccCreditInfo['Remaining_amount']; // Оставащ кредит
-  $interest = $currAccCreditInfo['Interest'];
   $remaining_installments = $currAccCreditInfo['Remaining_installments']; // Оставащи месеци/вноски
   $price_month = $currAccCreditInfo['Amount_installment']; 
 
