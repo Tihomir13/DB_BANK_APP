@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>User Dashboard</title>
     <link rel="stylesheet" href="Style\styles.css" />
-    <script defer src="./helperJS.js"></script>
+    <script src="./helperJS.js"></script>
   </head>
   <body>
     <div class="container">
