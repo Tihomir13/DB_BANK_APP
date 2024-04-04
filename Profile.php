@@ -159,25 +159,17 @@ include("User_Acc_Info.php");
     }
 
     if(isset($_POST["deleteUser"])){
-
         
         $HasCreditQuery = ("SELECT * FROM credit WHERE Bank_Account_IBAN = '$currAccIBAN'");
         $result = mysqli_query($conn, $HasCreditQuery);
         
         if ($result && mysqli_num_rows($result) == 1){
-            echo '
-            <script>
-            alert("You have to pay off your loan before you delete your Bank Account!");
-            </script>';
+            echo "<script>
+            alert('You have to pay off your loan before you delete your Bank Account!');
+            </script>";
             exit();
         };
-
-        echo " <script>
-            deleteVerify();
-        </script>";
-
         
-
         $deleteTransaction = "DELETE FROM transaction
            WHERE S_Bank_Account_IBAN = '$currAccIBAN' || R_Bank_Account_IBAN = '$currAccIBAN'";
 

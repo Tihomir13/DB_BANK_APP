@@ -37,8 +37,7 @@ function generateWord() {
         'abcdefghijklmnopqrstuvwxyz0123456789@#$';
 
     for (let i = 1; i <= 5; i++) {
-        let char = Math.floor(Math.random()
-            * str.length + 1);
+        let char = Math.floor(Math.random() * str.length);
 
         word += str.charAt(char)
     }
