@@ -8,10 +8,7 @@ include("User_Acc_Info.php");
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile</title>
-    <script src="helperJS.js"></script>
-    <?php 
-        // include("Bootstrap.php");
-    ?>
+    <script src="Helpers/helperJS.js"></script>
     <style>
         button {
             background-color: #EA4C89;
@@ -179,11 +176,18 @@ include("User_Acc_Info.php");
             deleteVerify();
         </script>";
 
+        
+
+        $deleteTransaction = "DELETE FROM transaction
+           WHERE S_Bank_Account_IBAN = '$currAccIBAN' || R_Bank_Account_IBAN = '$currAccIBAN'";
+
+
         $deleteBankAcc = "DELETE FROM bank_account WHERE IBAN = '$currAccIBAN'";
         $deleteUser = "DELETE FROM client WHERE EGN = '$egn'";
         
-        $deleteBankAcc = mysqli_query($conn,$deleteBankAcc);
-        $deleteClient = mysqli_query($conn,$deleteUser);
+        mysqli_query($conn,$deleteTransaction);
+        mysqli_query($conn,$deleteBankAcc);
+        mysqli_query($conn,$deleteUser);
 
         header("Location: Login.php");
     }
