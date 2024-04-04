@@ -1,7 +1,7 @@
 <?php 
 //   session_start();
   include('database.php');
-  include('helperFunctions.php');
+  include('Helpers/helperFunctions.php');
 ?>
 
 <!DOCTYPE html>

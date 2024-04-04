@@ -1,7 +1,7 @@
 <?php 
   session_unset();
   include('database.php');
-  include('helperFunctions.php');
+  include('Helpers/helperFunctions.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">

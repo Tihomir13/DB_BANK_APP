@@ -1,7 +1,7 @@
 <?php 
   session_start();
   require('database.php');
-  require('helperFunctions.php');
+  require('Helpers/helperFunctions.php');
 
   $username = $_SESSION['username'];
   $name = $_SESSION['name'];
